@@ -1,14 +1,23 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Console Rock Paper Scissors</title>
+    <title>Rock Paper Scissors UI</title>
     <link rel="icon" href="data:,">
 </head>
 <body>
-    <h1>Open your browser console to play Rock Paper Scissors!</h1>
-    <script src="script.js"></script>
+    <h1>Rock Paper Scissors (First to 5 Wins!)</h1>
     
+    <div id="buttons">
+        <button id="rock">🪨 Rock</button>
+        <button id="paper">📄 Paper</button>
+        <button id="scissors">✂️ Scissors</button>
+    </div>
+
+    <div id="score" style="margin-top: 20px; font-weight: bold;">You: 0 | Computer: 0</div>
+    <div id="results" style="margin-top: 10px;">Click any button to start the match!</div>
+
+    <script src="script.js"></script>
 </body>
 </html>

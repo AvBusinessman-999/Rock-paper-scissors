@@ -1,76 +1,56 @@
-// TOP Project: Rock Paper Scissors (No Loops or Arrays Edition)
+let humanScore = 0;
+let computerScore = 0;
 
-function playGame() {
-    // Step 4: Declare internal score trackers inside the game loop
-    let humanScore = 0;
-    let computerScore = 0;
+// Grab DOM elements
+const resultsDiv = document.querySelector("#results");
+const scoreDiv = document.querySelector("#score");
+const buttons = document.querySelectorAll("#buttons button");
 
-    // Step 2: Computer Choice Generator
-    function getComputerChoice() {
-        let randomValue = Math.random();
-        if (randomValue < 0.34) {
-            return "rock";
-        } else if (randomValue < 0.67) {
-            return "paper";
-        } else {
-            return "scissors";
-        }
-    }
+function getComputerChoice() {
+    const randomValue = Math.random();
+    if (randomValue < 0.34) return "rock";
+    if (randomValue < 0.67) return "paper";
+    return "scissors";
+}
 
-    // Step 3: Human Choice Grabber
-    function getHumanChoice() {
-        let userInput = prompt("Enter rock, paper, or scissors:");
-        // Sanitize input to handle case-insensitivity
-        return userInput.toLowerCase();
-    }
+function playRound(humanChoice) {
+    // Stop playing if someone already won the 5-point match
+    if (humanScore === 5 || computerScore === 5) return;
 
-    // Step 5: Single Round Logical Processing Engine
-    function playRound(humanChoice, computerChoice) {
-        if (humanChoice === computerChoice) {
-            console.log(`🤝 It's a tie! Both chose ${humanChoice}.`);
-        } 
-        // Human Winning Gates
-        else if (
-            (humanChoice === "rock" && computerChoice === "scissors") ||
-            (humanChoice === "paper" && computerChoice === "rock") ||
-            (humanChoice === "scissors" && computerChoice === "paper")
-        ) {
-            humanScore++;
-            console.log(`🎉 You win this round! ${humanChoice} beats ${computerChoice}.`);
-        } 
-        // Computer Winning Gates
-        else {
-            computerScore++;
-            console.log(`💻 Computer wins this round! ${computerChoice} beats ${humanChoice}.`);
-        }
-        
-        console.log(`Current Score -> You: ${humanScore} | Computer: ${computerScore}\n-------------------`);
-    }
+    const computerChoice = getComputerChoice();
 
-    // Step 6: Execute 5 Distinct Rounds Sequentially
-    console.log("🚀 STARTING THE GAME (5 ROUNDS) 🚀\n");
-
-    // Round 1
-    playRound(getHumanChoice(), getComputerChoice());
-    // Round 2
-    playRound(getHumanChoice(), getComputerChoice());
-    // Round 3
-    playRound(getHumanChoice(), getComputerChoice());
-    // Round 4
-    playRound(getHumanChoice(), getComputerChoice());
-    // Round 5
-    playRound(getHumanChoice(), getComputerChoice());
-
-    // Final Outcome Declaration Evaluator
-    console.log("=== FINAL TOURNAMENT RESULT ===");
-    if (humanScore > computerScore) {
-        console.log(`🏆 CONGRATULATIONS! You Defeated Technologia ${humanScore} to ${computerScore}!`);
-    } else if (computerScore > humanScore) {
-        console.log(`💀 SO BAD! Technologia defeated you ${computerScore} to ${humanScore}.`);
+    if (humanChoice === computerChoice) {
+        resultsDiv.textContent = `🤝 Tie! Both chose ${humanChoice}.`;
+    } else if (
+        (humanChoice === "rock" && computerChoice === "scissors") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "scissors" && computerChoice === "paper")
+    ) {
+        humanScore++;
+        resultsDiv.textContent = `🎉 You win this round! ${humanChoice} beats ${computerChoice}.`;
     } else {
-        console.log(`👔 It's a tie! Final score: ${humanScore} - ${computerScore}.`);
+        computerScore++;
+        resultsDiv.textContent = `💻 Computer wins this round! ${computerChoice} beats ${humanChoice}.`;
+    }
+
+    // Update live scoreboard on the webpage
+    scoreDiv.textContent = `You: ${humanScore} | Computer: ${computerScore}`;
+
+    // Check for overall 5-point match winner
+    if (humanScore === 5) {
+        resultsDiv.textContent = "🏆 CHAMPION! You reached 5 points and defeated the machine!";
+        resultsDiv.style.color = "green";
+        resultsDiv.style.fontWeight = "bold";
+    } else if (computerScore === 5) {
+        resultsDiv.textContent = "💀 GAME OVER! The computer reached 5 points first.";
+        resultsDiv.style.color = "red";
+        resultsDiv.style.fontWeight = "bold";
     }
 }
 
-// Fire the application engine automatically on page load
-playGame();
+// Attach click event listeners to all three buttons
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        playRound(button.id); // Passes 'rock', 'paper', or 'scissors'
+    });
+});
